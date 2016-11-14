@@ -1,0 +1,45 @@
+.areas_content{
+	width: 95%;
+	margin: 0 auto;
+}
+
+.content_question{
+	width: 90%;
+	border-bottom: 1px solid #ebeae6;
+	margin: 15px auto;
+} 
+
+.paginator{
+	padding: 10px;
+}
+
+.pre_button{
+	display: inline-block;
+	border-radius: 50%;
+	width: 85px;
+	height: 85px;
+	margin-bottom: 5px;
+}
+
+.pre_button a{
+	display: block;
+	color: #fff;
+}
+
+.pre_button i{
+	margin-top: 20px;
+	margin-bottom: 23px;
+}
+
+
+.page-content{
+	padding: 10px 15px;	
+}
+
+.question_options{
+	padding-top: 20px;
+}
+
+.title_areas{
+	padding: 0px 40px;
+}

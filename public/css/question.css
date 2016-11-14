@@ -1,0 +1,19 @@
+.question{
+	margin-bottom: 15px;
+	border-bottom: 1px solid #f3f3f4;
+}
+
+.question_description{
+	height: 200px;
+	overflow-y: scroll;
+}
+
+.question_footer{
+	margin-bottom: 10px;
+	/*height: 25px;*/
+	/*overflow: hidden;*/
+}
+
+.description{
+	font-size: 14px;
+}
