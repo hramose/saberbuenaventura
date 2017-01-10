@@ -48,14 +48,14 @@
 
 								@if( ($date_now->isSameDay($start_date_preicfes)) && ($range_hour_now <= $range_hour) )
 								
-									@if( ($range_minute_now < $range_minute) )
+									@if( ($range_minute_now < $range_minute))
 										<a href="{{ route('preicfes.description', $pre_icfes->id) }}" class="btn btn-primary pull-right">Realizar Prueba</a>
 
 									@elseif( ($range_minute == 0) && ($range_minute_now > $range_minute) )
-										<a href="{{ route('preicfes.description', $pre_icfes->id) }}" class="btn btn-primary pull-right">Realizar Prueba</a>
+										<a href="{{ route('preicfes.description', $pre_icfes->id) }}" class="btn btn-primary pull-right">Realizar Prueba2</a>
 
 									@elseif( ($range_minute == 30) && ($range_minute_now > $range_minute) )
-										<a href="{{ route('preicfes.description', $pre_icfes->id) }}" class="btn btn-primary pull-right">Realizar Prueba</a>
+										<a href="{{ route('preicfes.description', $pre_icfes->id) }}" class="btn btn-primary pull-right">Realizar Prueba 3</a>
 									@endif
 									
 								@else

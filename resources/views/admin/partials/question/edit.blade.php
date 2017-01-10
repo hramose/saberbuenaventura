@@ -2,6 +2,7 @@
 
 @section('css')
 	<link href="{{ asset('css/elements-forms.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ asset('css/question.css') }}" rel="stylesheet" type="text/css">
 @endsection
 @section('page_title')
 	{{ 'Editar pregunta'}}
@@ -16,7 +17,7 @@
 @endsection
 @section('row')
 	@include('complements.errors')
-	{!! Form::open(['route' => ['admin.question.update', $question], 'method'=> 'PUT']) !!}
+	{!! Form::open(['route' => ['admin.question.update', $question], 'method'=> 'PUT', 'files'=>true]) !!}
 		<div class="row">
 			<div class="col-md-6">
 				<div class="form-group">
@@ -35,7 +36,7 @@
 			<div class="col-md-6">
 				<div class="form-group">
 					{!! Form::label('competence_id', 'Competencia', []) !!}
-					{!! Form::select('competence_id', $competences, $question->asignature->area_id, ['class'=>'form-control']) !!}
+					{!! Form::select('competence_id', $competences, $question->competence->id, ['class'=>'form-control']) !!}
 				</div>
 			</div>
 			<div class="col-md-6">
@@ -52,14 +53,21 @@
 		<hr>
 		<div class="form-group">
 			{!! Form::label('option_type', 'Tipo de opcion', []) !!}
-			{!! Form::select('option_type', ['text'=>'texto','image'=>'imagen'], $question->option_type, ['class'=>'form-control']) !!}
+			{!! Form::select('option_type', ['text'=>'texto','image'=>'imagen'], $question->options[0]->option_type, ['class'=>'form-control']) !!}
 		</div>
 		<div id="contentqo">
 			<div id="subcontentqo">
 				@foreach($question->options as $key => $value) 
 					<div class="form-group content_option radio" id="question{{$key}}">
 						{!! Form::label(null, 'Opcion '.($key+1), ['class'=>'label_option']) !!}
-						{!! Form::text('option', $value->option, ['class'=>'form-control input_option', 'name'=>'option['.$value->id.'][]']) !!}
+						@if($value->option_type == 'image')
+							<div class="thumQC">
+								<img src="{{asset('img/options/'.$value->option)}}" width="50%">
+							</div>
+							{!! Form::file('option', ['value'=>$value->option, 'class'=>'form-control input_option', 'name'=>'option['.$value->id.']']) !!}
+						@else
+							{!! Form::text('option', $value->option, ['class'=>'form-control input_option', 'name'=>'option['.$value->id.']']) !!}
+						@endif
 						@if($value->value)
 							{!! Form::radio('option'.($key), $key, true, ['name'=>'value[]','id'=>'option'.$key]) !!}
 						@else
@@ -71,7 +79,7 @@
 			</div>
 		</div>
 		<div class="form-group text-center" id="registerQ-btn">
-			{!! Form::submit('Registrar Competencia', ['class'=>'btn btn-primary']) !!}
+			{!! Form::submit('Actualizar Pregunta', ['class'=>'btn btn-primary']) !!}
 		</div>
 	{!! Form::close() !!}
 @endsection

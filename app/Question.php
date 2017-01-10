@@ -38,4 +38,5 @@ class Question extends Model
     public function student_pre_icfes_questions(){
         return $this->hasMany('App\Student_pre_icfes_questions');
     }
+
 }

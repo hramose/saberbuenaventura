@@ -14,7 +14,25 @@
 			@include('complements.flash')
 			{{--  --}}
 			<div class="profile_info">
+				@if($preicfes_result > 0)
 				<div class="row">
+					<div class="col-md-12">
+						<div class="alert alert-info clearfix" role="alert">
+							<p class="pull-left">Heyy!! ya cuentas con resultados de esta prueba</p>
+							<a href="{{route('preicfes.showResults', $preicfes->id)}}" class="btn btn-default btn-sm pull-right" style="margin:0px"><i class="fa fa-eye"></i> Ver resultados</a>
+						</div>
+					</div>
+				</div>
+				@endif
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="alert alert-warning text-center" style="width: 70%;margin:0 auto;">
+							<p>
+								<i class="fa fa-clock-o"></i>
+								<span id="countdown"></span>
+							</p>
+						</div>
+					</div>
 					<div class="col-md-12">
 						<h4>Descripción</h4>
 						<div class="preicfes_description">
@@ -35,7 +53,7 @@
 									$icon = 'fa fa-users fa-3x';
 								}
 								elseif(strstr($area->name, 'ciencias')){
-									$class='col-md-2 col-xs-6';
+									$class='col-md-3 col-xs-6';
 									$icon = 'fa fa-bug fa-3x';
 								}
 								elseif(strstr($area->name, 'ingles')){
@@ -64,7 +82,9 @@
 					</div>
 				</div>
 				<div>
-					{!! Form::open() !!}
+					{!! Form::open(['route'=>'preicfes.saveTest', 'methos'=>'post', 'id'=>'formTest']) !!}
+						{!! Form::hidden('student_id', $student_id, []) !!}
+						{!! Form::hidden('pre_icfes_id', $preicfes->id, []) !!}
 						<div class="form-group text-center">
 							{!! Form::submit('Terminar prueba', ['class'=>'btn btn-success']) !!}
 						</div>
@@ -73,4 +93,12 @@
 			</div>
 		</div>
 	</div>
+@endsection
+
+@section('js')
+	<script>
+		var id_pre = {!! $preicfes->id !!};
+		var targetD = {!! strtotime($preicfes->end_date) !!}
+	</script>
+	<script src="{{asset('js/countdown.js')}}"></script>
 @endsection

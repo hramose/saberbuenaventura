@@ -36,4 +36,5 @@
 			@endforeach
 		</tbody>
 	</table>
+	{!! $competences->render() !!}
 @endsection

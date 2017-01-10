@@ -1,17 +1,27 @@
+.thumQC{
+	width: 40%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
 .question{
 	margin-bottom: 15px;
 	border-bottom: 1px solid #f3f3f4;
 }
 
 .question_description{
-	height: 200px;
+	height: 400px;
+	padding: 5px;
 	overflow-y: scroll;
 }
 
 .question_footer{
+	margin-top: 10px;
 	margin-bottom: 10px;
-	/*height: 25px;*/
-	/*overflow: hidden;*/
+    padding: 10px;
+    background-color: #f9f9f9;
+    /* height: 25px; */
+    /* overflow: hidden; */
 }
 
 .description{

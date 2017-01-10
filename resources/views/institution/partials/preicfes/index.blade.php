@@ -32,11 +32,13 @@
 					<td>
 						<a class="btn btn-info" title="Editar" href="{{ route('institution.preicfes.edit', $preicfes->id) }}"><i class="fa fa-edit"></i>
 						</a>
-
+						<a class="btn btn-default" title="Ver" href="{{ route('institution.preicfes.edit', $preicfes->id) }}"><i class="fa fa-eye"></i>
+						</a>
 						@if(count($preicfes->students()->get()) == 0)
 						<a class="btn btn-danger" title="Eliminar" href="{{ route('institution.preicfes.destroy', $preicfes->id) }}" onclick="return confirm('Desea eliminar este pre-ICFES')"><i class="fa fa-trash"></i>
 						</a>
 						@endif
+
 					</td>
 				</tr>
 			@endforeach

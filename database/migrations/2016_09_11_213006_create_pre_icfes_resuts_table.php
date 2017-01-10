@@ -14,11 +14,11 @@ class CreatePreIcfesResutsTable extends Migration
     {
         Schema::create('pre_icfes_resuts', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('math_score')->nullable();
-            $table->integer('critical_reading_score')->nullable();
-            $table->integer('social_score')->nullable();
-            $table->integer('natural_sciences_score')->nullable();
-            $table->integer('english_score')->nullable();
+            $table->integer('matematicas')->nullable();
+            $table->integer('lectura_critica')->nullable();
+            $table->integer('sociales_y_ciudadanas')->nullable();
+            $table->integer('ciencias_naturales')->nullable();
+            $table->integer('ingles')->nullable();
             $table->integer('total_score');
 
             $table->integer('student_id')->unsigned();

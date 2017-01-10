@@ -127,4 +127,12 @@ class AreaController extends Controller
             return response()->json($asignatures);
         }
     }
+
+    public function getAreaByGrade(Request $request, $grade){
+        if($request->ajax() && $grade != null){
+            $areas = Area::getAreaByGrade($grade);
+
+            return response()->json($areas);
+        }
+    }
 }

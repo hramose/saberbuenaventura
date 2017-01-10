@@ -43,3 +43,12 @@
 .title_areas{
 	padding: 0px 40px;
 }
+
+/**/
+.question_description_header > p:last-child{
+	display: none;
+}
+
+.question_description > .question_header{
+	display: none;
+}

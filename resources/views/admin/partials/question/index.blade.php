@@ -39,7 +39,12 @@
 							<tbody>
 								@foreach($question->options as $option)
 									<tr>
-										<td>{!! $option->option !!}</td>
+										<td>
+										@if($option->option_type == 'image')
+											<img src="{{asset('img/options/'.$option->option)}}" width="20%">
+										@else	
+											{!! $option->option !!}</td>
+										@endif
 										<td>
 											@if($option->value)
 												<span class="label label-success">Verdadero</span>
@@ -54,11 +59,11 @@
 					</div>
 				</div>
 				<div class="row question_footer">
-					<div class="col-md-1">
+					<div class="col-md-2">
 						<span class="label label-success">{!! $question->asignature->area->name !!}</span>
 					</div>
-					<div class="col-md-7">
-						<label>Competencia: </label> <small class="description">Comprende cómo se articulan las partes de un texto para darle un sentido global</small>
+					<div class="col-md-6">
+						<label>Competencia: </label> <small class="description">{!! $question->competence->name !!}</small>
 					</div>
 					<div class="col-md-4">
 						<div class="article_action">
@@ -68,7 +73,7 @@
 							</a>
 							<a class="btn btn-xs btn-default" role="button" href="{{ route('admin.question.destroy', $question->id) }}" onclick="return confirm('Desea eliminar esta pregunta')">
 								<i class="fa fa-trash"></i>
-								Editar
+								Eliminar
 							</a>
 						</div>
 					</div>

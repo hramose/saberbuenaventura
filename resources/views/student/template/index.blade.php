@@ -23,7 +23,7 @@
    </head>
    <body>
       @include('student.template.header')
-      <div class="container-fluid">
+      <div class="container">
          <div class="row">
             @yield('content')
          </div>

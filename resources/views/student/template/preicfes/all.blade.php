@@ -15,9 +15,7 @@
 					<?php 
 					
 						$start_date = Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $pre_icfes->start_date);
-						Carbon\Carbon::setToStringFormat('d-n-Y ')
-
-						// dd();
+						Carbon\Carbon::setToStringFormat('d-n-Y ');
 					?>
 					<div class="preicfes_test">
 						<div class="clearfix">

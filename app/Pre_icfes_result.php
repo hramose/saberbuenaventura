@@ -9,7 +9,7 @@ class Pre_icfes_result extends Model
 {
     protected $table = 'pre_icfes_result';
 
-    protected $fillable = ['critical_reading_score', 'math_score', 'social_score', 'natural_sciences_score', 'english_score', 'total_score', 'student_id', 'pre_icfes_id'];
+    protected $fillable = ['codigo_registro' ,'lectura_critica', 'matematicas', 'sociales_y_ciudadanas', 'ciencias_naturales', 'ingles', 'total_score', 'student_id', 'pre_icfes_id'];
 
     public function student(){
     	return; $this->belongsTo('App\Student');
@@ -29,6 +29,12 @@ class Pre_icfes_result extends Model
                     ['student_id', '=', $student_id],
                     ['pre_icfes_id', '=', $pre_icfes_id]
                 ])
+                ->first();
+    }
+
+    public static function getResultByCode($code){
+        return Pre_icfes_result::select('*')
+                ->where('codigo_registro', '=', $code)
                 ->first();
     }
 

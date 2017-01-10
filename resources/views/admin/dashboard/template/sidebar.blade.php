@@ -27,6 +27,16 @@
         </ul>
     </li>
     <li class="link"> 
+        <a data-toggle="collapse" data-parent="#sidebar" href="#Desempe">
+            <span class="fa fa-level-up"></span>
+            <span>Nivel de desempeño</span>  
+        </a>
+        <ul id="Desempe" class="collapse collapseable">
+            <li><a href="{{ route('admin.performance.create') }}">Crear</a></li>
+            <li><a href="{{ route('admin.performance.index') }}">Ver</a></li>
+        </ul>
+    </li>
+    <li class="link"> 
     	<a data-toggle="collapse" data-parent="#sidebar" href="#AsignaturasM">
     		<span class="fa fa-bookmark"></span>
     		<span>Asignaturas</span>	
@@ -44,16 +54,6 @@
         <ul id="CompetenciasM" class="collapse collapseable">
         	<li><a href="{{ route('admin.competence.create') }}">Crear</a></li>
             <li><a href="{{ route('admin.competence.index') }}">Ver</a></li>
-        </ul>
-    </li>
-    <li class="link"> 
-    	<a data-toggle="collapse" data-parent="#sidebar" href="#LogrosM">
-    		<span class="glyphicon glyphicon-sunglasses"></span>
-    		<span>Logros</span>	
-    	</a>
-        <ul id="LogrosM" class="collapse collapseable">
-            <li><a href="{{ route('admin.achievement.create') }}">Crear</a></li>
-            <li><a href="{{ route('admin.achievement.index') }}">Ver</a></li>
         </ul>
     </li>
     <li class="link"> 

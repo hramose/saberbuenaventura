@@ -13,6 +13,18 @@
 			</h4>
 			<a href="{{ route('preicfes.description', $pre_icfes_id) }}" class="pull-right btn btn-primary btn-xs">Ver Prueba</a>
 		</header>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="alert alert-warning text-center" style="width: 70%;margin:10px auto;">
+						<p>
+							<i class="fa fa-clock-o"></i>
+							<span id="countdown"></span>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="paginator text-center">
 			<ul class="pagination" id="pagination-demo">
 
@@ -34,7 +46,13 @@
 										@foreach($question->options as $option)
 											<div class="form-group content_question radio">
 												{!! Form::radio("anwser[$question->id][]", null, false, ['id'=>'option_'.$option->id]) !!}
-												{!! Form::label('option_'.$option->id, $option->option, ['class'=>'radio_label uncheck', 'data-info'=>$option->id.'-'.$question->id, 'id'=>'q'.$question->id]) !!}
+												@if($option->option_type == 'image')
+													<label for="option_{{$option->id}}" class="radio_label uncheck" data-info="{{$option->id.'-'.$question->id}}" id="q{{$question->id}}">
+														<img src="{{asset('img/options/'.$option->option)}}">
+													</label>
+												@else
+													{!! Form::label('option_'.$option->id, $option->option, ['class'=>'radio_label uncheck', 'data-info'=>$option->id.'-'.$question->id, 'id'=>'q'.$question->id]) !!}
+												@endif
 											</div>
 										@endforeach
 									</div>
@@ -46,16 +64,26 @@
 										{!! $question->question->description !!}
 									</div>
 									<div class="question_options">
-										{{-- {{ dd($question) }} --}}
 										@foreach($question->question->options as $option)
-												{{-- {{$option->option}} --}}
 											<div class="form-group content_question radio">
 												@if($option->id == $question->option_id)
 													{!! Form::radio("anwser[$question->id][]", null, true, ['id'=>'option_'.$option->id]) !!}
-													{!! Form::label('option_'.$option->id, $option->option, ['class'=>'radio_label check', 'data-info'=>$option->id.'-'.$question->question->id.'-'.$question->id, 'id'=>'q'.$question->id]) !!}
+													@if($option->option_type == 'image')
+														<label for="option_{{$option->id}}" class="radio_label check" data-info="{{$option->id.'-'.$question->question->id.'-'.$question->id}}" id="q{{$question->id}}">
+															<img src="{{asset('img/options/'.$option->option)}}">
+														</label>
+													@else
+														{!! Form::label('option_'.$option->id, $option->option, ['class'=>'radio_label check', 'data-info'=>$option->id.'-'.$question->question->id.'-'.$question->id, 'id'=>'q'.$question->id]) !!}
+													@endif
 												@else
 													{!! Form::radio("anwser[$question->id][]", null, false, ['id'=>'option_'.$option->id]) !!}
-													{!! Form::label('option_'.$option->id, $option->option, ['class'=>'radio_label uncheck', 'data-info'=>$option->id.'-'.$question->question->id.'-'.$question->id, 'id'=>'q'.$question->id]) !!}
+													@if($option->option_type == 'image')
+														<label for="option_{{$option->id}}" class="radio_label uncheck" data-info="{{$option->id.'-'.$question->question->id.'-'.$question->id}}" id="q{{$question->id}}">
+															<img src="{{asset('img/options/'.$option->option)}}">
+														</label>
+													@else
+														{!! Form::label('option_'.$option->id, $option->option, ['class'=>'radio_label uncheck', 'data-info'=>$option->id.'-'.$question->question->id.'-'.$question->id, 'id'=>'q'.$question->id]) !!}
+													@endif
 												@endif
 											</div>
 										@endforeach
@@ -91,4 +119,26 @@
 @section('js')
 	<script src="{{asset('plugin/paginator/jquery.twbsPagination.js')}}"></script>
 	<script src="{{asset('js/testPreicfes.js')}}"></script>
+	<script>
+
+		var id_pre = {!! $preicfes->id !!};
+		var targetD = {!! strtotime($preicfes->end_date) !!}
+
+		$('#pagination-demo').twbsPagination({
+		    totalPages: 25,
+		    visiblePages: 7,
+		    first: 'Primero',
+		    prev: 'Anetrior',
+		    next: 'Siguiente',
+		    last: 'Ulitmo',
+		    onPageClick: function (event, page) {
+		      	var questionAll 	= $('.question'),
+		       		questionContent	= $('#question_'+page);
+
+			       	questionAll.addClass('hidden');
+			      	questionContent.removeClass('hidden');
+			}
+		});
+	</script>
+	<script src="{{asset('js/countdown.js')}}"></script>
 @endsection

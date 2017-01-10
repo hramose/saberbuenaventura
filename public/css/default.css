@@ -204,6 +204,38 @@ html, body{
 	background-color: #1ab394;
 }
 
+.navbar-primary{
+	background-color: #3ca2e0;
+	border-color: #0089dc;
+
+	webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, .175);
+	-moz-box-shadow: 0 2px 4px rgba(0, 0, 0, .175);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .175);
+}
+
+.navbar-primary .navbar-nav > .active > a,
+.navbar-primary .navbar-nav > .active > a:hover,
+.navbar-primary .navbar-nav > .active > a:focus {
+  color: #fff;
+  background: rgba(0, 0, 0, .2);
+}
+
+.navbar-primary .navbar-nav > li > a {
+  color: #fff;
+}
+
+.navbar-primary .navbar-nav > .open > a,
+.navbar-primary .navbar-nav > .open > a:hover,
+.navbar-primary .navbar-nav > .open > a:focus {
+  color: #555;
+  background-color: #fff;
+}
+
+.navbar-primary .navbar-nav > li > a:hover,
+.navbar-primary .navbar-nav > li > a:focus {
+  color: #fff;
+  background: rgba(0, 0, 0, .1);
+}
 
 .panelBox{
 	margin: 20px 0px 50px 0px;

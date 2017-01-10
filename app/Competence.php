@@ -18,10 +18,6 @@ class Competence extends Model
     	return $this->hasMany('App\Question');
     }
 
-    public function achievements(){
-    	return $this->hasMany('App\Achievement');
-    }
-
     public static function getCompetencesByArea($id){
         return Competence::where('area_id', '=', $id)->get();
     }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Class_room;
+use App\Institution;
 use App\Http\Requests\ClassroomRequest;
 
 class ClassroomController extends Controller
@@ -17,7 +18,9 @@ class ClassroomController extends Controller
      */
     public function index()
     {
-        $classrooms = Class_room::orderBy('name', 'ASC')->paginate(5);
+        // $classrooms = Class_room::orderBy('name', 'ASC')->paginate(5);
+        $institution = Auth()->guard('institutions')->user();
+        $classrooms = Institution::getCloassrooms($institution->id);
 
         return  view('institution.partials.classroom.index')
                 ->with('classrooms', $classrooms);

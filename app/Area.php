@@ -21,4 +21,15 @@ class Area extends Model
     public function competences(){
     	return $this->hasMany('App\Competence');
     }
+
+    public function performance_level(){
+        return $this->hasMany('App\Performance_level');
+    }
+
+    public static function getAreaByGrade($grade){
+        return Area::select('*')
+                ->where('grade','=',$grade)
+                ->orderBy('name','ASC')
+                ->get();       
+    }
 }

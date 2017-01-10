@@ -6,12 +6,12 @@
 				Inicio
 			</a>
 		</li>
-		<li>
+		{{-- <li>
 			<a href="{{ route('student.profile') }}">
 				<i class="fa fa-user"></i>
 				Perfil
 			</a>
-		</li>
+		</li> --}}
 		<li>
 			<a href="{{ route('student.about') }}">
 				<i class="fa fa-info-circle"></i>

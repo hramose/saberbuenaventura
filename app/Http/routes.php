@@ -35,6 +35,9 @@ Route::group(['prefix'=>'ajax'], function(){
 
 	Route::get('{id}/getCompetences', 'AreaController@getCompetencesByArea');
 	Route::get('{id}/getAsignatures', 'AreaController@getAsignaturesByArea');
+	Route::get('{grade}/getArea', 'AreaController@getAreaByGrade');
+
+	Route::get('changeStatus&change={status}&preicfes={id}', 'PreicfesController@PreIcfeschangeStatus');
 
 });
 
@@ -61,6 +64,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
 	Route::get('area/{id}/destroy', [
 		'uses'	=>	'AreaController@destroy',
 		'as'	=> 'admin.area.destroy'
+	]);
+
+	Route::resource('performance', 'Performance_controller');
+	Route::get('performance/{id}/destroy', [
+		'uses'	=>	'Performance_controller@destroy',
+		'as'	=> 'admin.performance.destroy'
 	]);
 
 	Route::resource('asignature', 'AsignatureController');
@@ -134,6 +143,11 @@ Route::group(['prefix' => 'student', 'middleware' => 'student'], function() {
 		'as'	=>	'student.main'
 	]);
 
+	Route::get('logout', [
+		'uses'	=>	'StudentController@logout',
+		'as'	=>	'student.logout'
+	]);
+
 	Route::resource('student', 'StudentController');
 
 	Route::get('profile', [
@@ -171,6 +185,16 @@ Route::group(['prefix' => 'student', 'middleware' => 'student'], function() {
 		'as'	=>	'preicfes.description'
 	]);
 
+	Route::get('preicfes/{preicfes_id}/showResults',[
+		'uses'	=> 'PreicfesController@showResults',
+		'as'	=>	'preicfes.showResults'
+	]);
+
+	Route::get('preicfes/{id}/{area}/{area_id}',[
+		'uses'	=>	'PreicfesController@preicfesTest',
+		'as'	=>	'preicfes.test'
+	]);
+
 	Route::post('preicfes/saveAnwser',[
 		'uses'	=> 'PreicfesController@saveAnwser',
 		'as'	=>	'preicfes.saveAnwser'
@@ -181,13 +205,22 @@ Route::group(['prefix' => 'student', 'middleware' => 'student'], function() {
 		'as'	=>	'preicfes.updateAnwser'
 	]);
 
-	Route::get('preicfes/{preicfes_id}/showResults',[
-		'uses'	=> 'PreicfesController@showResults',
-		'as'	=>	'preicfes.showResults'
+	Route::post('preicfes/saveTest', [
+		'uses'	=>	'PreicfesController@saveTest',
+		'as'	=>	'preicfes.saveTest'
 	]);
 
-	Route::get('preicfes/{id}/{area}/{area_id}',[
-		'uses'	=>	'PreicfesController@preicfesTest',
-		'as'	=>	'preicfes.test'
+	Route::get('preicfes/showResults/{id}', [
+		'uses'	=>	'PreicfesController@showResults',
+		'as'	=>	'preicfes.showResults'
+
+	]);
+});
+
+Route::group(['prefix' => 'pdf'], function(){
+
+	Route::get('results/{code}', [
+		'uses'	=>	'PreicfesController@showResultsPDF',
+		'as'	=>	'preicfes.showResultsPDF'
 	]);
 });

@@ -59,6 +59,7 @@
 			if(contentQ.children().length > 0)
 				subcontent.remove();
 
+				buildImageOptionForm();
 		}else{
 			if(contentQ.children().length > 0)
 				subcontent.remove();
@@ -83,8 +84,27 @@
 					)
 				)
 		}
-		 
+
 	}
+	var buildImageOptionForm = function(){
+		contentQ.append($('<div>',{id:'subcontentqo'}));
+		for (var i = 0; i < 4; i++) {
+				$('#subcontentqo').append(
+					$('<div>',{'class': 'form-group content_option radio','id': 'question'+i}).append(
+						$('<label class="label_option">Opción '+(i+1)+'</label>'),
+						$('<input>',{'type': 'file', 'name':'option[]', 'class': 'form-control input_option'}),
+						$('<input> ',{
+							'name'	: 'value[]',
+							'type'	: 'radio',
+							'id'	: 'option'+(i+1),
+							'value' : i
+						}),
+						$('<label for="option'+(i+1)+'" class="radio_label" >Verdadero</label>')
+					)
+				)
+		}
+	}
+		 
 
 	// Listeners
 	type_question.addEventListener('change', builForm, false);

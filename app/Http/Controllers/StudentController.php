@@ -11,6 +11,7 @@ use App\Http\Requests;
 use App\Class_room;
 use App\Student;
 use App\Pre_icfes;
+use App\Institution;
 use App\Http\Requests\StudentRequest;
 use App\Http\Requests\ChangePasswordRequest;
 
@@ -28,8 +29,11 @@ class StudentController extends Controller
 
     public function index()
     {
-        $students = Student::orderBy('id', 'DES')->paginate(3);
-
+        // $students = Student::orderBy('id', 'DES')->paginate(3);
+        $institution = Auth()->guard('institutions')->user();
+        $students = Institution::getStudent($institution->id);
+        
+        // dd($students);
 
         return  view('institution.partials.student.index')
                 ->with('students', $students);
@@ -204,11 +208,16 @@ class StudentController extends Controller
         return redirect()->route('institution.student.index');
     }
 
+    public function logout(){
+        Auth()->guard('students')->logout();
+
+        return redirect('/');
+    }
+    
     public function dasboardIndex(){
 
         $student = Auth()->guard('students')->user();
-        return  view('student.template.home.home')
-                ->with('student', $student);
+        return  view('student.template.home.home');
     }
 
     public function viewProfile(){
@@ -225,14 +234,19 @@ class StudentController extends Controller
     public function preicfesAll(){
         $student = Auth()->guard('students')->user();
 
-        $pre_icfess = Pre_icfes::getPreicfesByStudent($student->id);
+        $pre_icfess = Pre_icfes::getPreicfesByStudent($student->id, "questions");
+
+        if(!isset($pre_icfess[0])){
+            $pre_icfess = Pre_icfes::getPreicfesByStudent($student->id, "results");
+        }
 
         $pre_icfess->each(function($pre_icfess){
             $pre_icfess->areas;
         });
-
+        
         return view('student.template.preicfes.all')
                 ->with('pre_icfess', $pre_icfess);
+        
     }
 
     public function take_preicfes(){

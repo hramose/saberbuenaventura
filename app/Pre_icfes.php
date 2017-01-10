@@ -54,23 +54,39 @@ class Pre_icfes extends Model
 
     public static function getActivePreicfes($class_room_id){
 
+
         return  Pre_icfes::select('*')
-                        ->where([
-                            ['state', '=', 'pendiente'],
-                            ['class_room_id', '=', $class_room_id],
-                        ])->get();
+                        ->orwhere('state', '=', 'en curso')
+                        ->orwhere('state', '=', 'pediente')
+                        ->where('class_room_id', '=', $class_room_id)
+                        ->get();
     }
 
-    public static function getPreicfesByStudent($student_id){   
+    public static function getPreicfesByStudent($student_id, $type){   
 
-        return Pre_icfes::select('pre_icfes.*')
+        if($type == "questions"){
+            $pre_icfes = Pre_icfes::select('pre_icfes.*')
                 ->join('student_pre_icfes_questions', 'pre_icfes.id', '=', 'student_pre_icfes_questions.pre_icfes_id')
                 ->where([
                             ['student_pre_icfes_questions.student_id', '=', $student_id],
                             ['pre_icfes.state', '=', 'finalizado']
                         ])
                 ->groupBy('student_pre_icfes_questions.pre_icfes_id')
+                ->get();    
+
+        }else if($type == "results"){
+            
+            $pre_icfes = Pre_icfes::select('pre_icfes.*')
+                ->join('pre_icfes_result', 'pre_icfes.id', '=', 'pre_icfes_result.pre_icfes_id')
+                ->where([
+                            ['pre_icfes_result.student_id', '=', $student_id],
+                            ['pre_icfes.state', '=', 'finalizado']
+                        ])
+                ->groupBy('pre_icfes_result.pre_icfes_id')
                 ->get();
+        }
+
+        return $pre_icfes;
     }
 
     public static function getQestionByArea($area){
@@ -91,7 +107,7 @@ class Pre_icfes extends Model
                     }
                 })
                 ->inRandomOrder()
-                ->take(8)->get();
+                ->take(25)->get();
     }
 
     public static function getAnwserTest($pre_icfes_id, $student_id){
@@ -130,7 +146,7 @@ class Pre_icfes extends Model
         $score      = (int) round($score, 0);
         $respResult = Pre_icfes_result::getResult($student_id, $pre_icfes_id);
         $preicfesR  = (count($respResult) > 0) ? $respResult : new Pre_icfes_result();
-        $field      = $preicfesR->saveScore($score, $area_id-1);
+        $field      = $preicfesR->saveScore($score, $area_id);
 
 
         $preicfesR->$field          = $score;
@@ -141,8 +157,57 @@ class Pre_icfes extends Model
         
     }
 
-    public static function saveResult(Pre_icfes_result $result){
-        // $result->save();
+    public static function saveTest($pre_icfes_id, $student_id){
+        $preicfes           = Pre_icfes::find($pre_icfes_id);
+        $preicfes_result    = Pre_icfes_result::getResult($student_id, $preicfes->id);
+
+        $preicfes->areas;
+
+        // dd($preicfes->areas);
+        
+        
+        if($preicfes_result == null){
+            $preicfes_result = new Pre_icfes_result();
+
+            foreach($preicfes_result['fillable'] as $field){
+                if($field != 'pre_icfes_id' && $field != 'student_id' && $field != 'codigo_registro')
+                    $preicfes_result->$field = 0;
+            }
+
+            $preicfes_result->codigo_registro = 'SB'.time();
+            $preicfes_result->student_id = $student_id;
+            $preicfes_result->pre_icfes_id = $pre_icfes_id;
+            $preicfes_result->save();
+            
+        }else{
+
+            $sumPoint = 0;
+            $sumWeighted = 0;
+            $sumAreas = count($preicfes->areas);
+            $indGlobal = 0;
+            $total_score = 0;
+
+            foreach($preicfes_result['attributes'] as $key => $value){
+                
+                foreach($preicfes->areas as $area){
+                    $area_result = str_replace('_', ' ', $key);
+                    if($area_result == $area->name){
+                        if($value == null){
+                            $value = 0;
+                            $preicfes_result->$key = 0;
+                        }
+                        $sumPoint    += $value * $area->weighted_value;
+                        $sumWeighted += $area->weighted_value;
+                    }
+                }
+            }
+
+            $indGlobal = round($sumPoint/$sumWeighted, 3);
+            $total_score = ceil($indGlobal * $sumAreas);
+            $preicfes_result->total_score = (int) $total_score;
+            $preicfes_result->codigo_registro = 'SB'.time();
+            $preicfes_result->save();
+        }
     }
 
     public static function getResultByStudent($student_id, $pre_icfes_id){

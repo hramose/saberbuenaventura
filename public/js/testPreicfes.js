@@ -6,22 +6,6 @@
 
 $(".question").first().removeClass('hidden');
 
-$('#pagination-demo').twbsPagination({
-    totalPages: 7,
-    visiblePages: 7,
-    first: 'Primero',
-    prev: 'Anetrior',
-    next: 'Siguiente',
-    last: 'Ulitmo',
-    onPageClick: function (event, page) {
-      	var questionAll 	= $('.question'),
-       		questionContent	= $('#question_'+page);
-
-	       	questionAll.addClass('hidden');
-	      	questionContent.removeClass('hidden');
-	}
-});
-
 (function(){
 	
 	if($('.check').length > 0){

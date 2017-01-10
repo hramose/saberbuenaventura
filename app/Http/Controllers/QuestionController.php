@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Area;
 use App\Author;
 use App\Question;
+use App\Question_option;
 use App\Asignature;
 use App\Competence;
 
@@ -21,12 +22,13 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $questions = Question::orderBy('id', 'DES')->paginate(3);
+        $questions = Question::orderBy('id', 'DES')->paginate(5);
 
         $questions->each(function($questions){
             $questions->options;
             $questions->author;
             $questions->asignature;
+            $questions->competence;
         });
 
         return  view('admin.partials.question.index')
@@ -56,29 +58,9 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        $question                       = new Question();
-        $question->description          = $request->description;
-        $question->author_id            = $request->author_id;
-        $question->asignature_id        = $request->asignature_id;
-        $question->competence_id        = $request->competence_id;
-        $question->save();
 
-        // dd($request->all());
-        foreach ($request->option as $key => $value) {
-            $boolean = false;
-
-            if($key == $request->value[0]) $boolean = true;
-
-            DB::table('question_options')->insert([
-                'option'        =>  $value,
-                'option_type'   =>  $request->option_type,
-                'value'         =>  $boolean,
-                'question_id'   =>  $question->id,
-                'created_at'    =>  date('Y-m-d H:m:i'),
-                'updated_at'    =>  date('Y-m-d H:m:i')
-            ]);
-        }
-
+        Question_option::saveOption($request);
+ 
         flash('La pregunta se ha creado correctamente', 'success');
         return redirect()->route('admin.question.index');
     }
@@ -124,31 +106,34 @@ class QuestionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $question                       = Question::find($id);
-        $question->description          = $request->description;
-        $question->author_id            = $request->author_id;
-        $question->asignature_id        = $request->asignature_id;
-        $question->competence_id        = $request->competence_id;
-        $question->save();
+    {   
 
-        $cont = 0;
-        foreach($request->option as $key => $value){
-            $boolean = false;
+        Question_option::updateOption($request, $id);
+        // dd($request->all());
+        // $question                       = Question::find($id);
+        // $question->description          = $request->description;
+        // $question->author_id            = $request->author_id;
+        // $question->asignature_id        = $request->asignature_id;
+        // $question->competence_id        = $request->competence_id;
+        // $question->save();
 
-            if($request->value[0] == $cont++) $boolean = true;
+        // $cont = 0;
+        // foreach($request->option as $key => $value){
+        //     $boolean = false;
 
-            DB::table('question_options')
-                ->where('id', $key)
-                ->update([
-                    'option'        =>  $value[0],
-                    'option_type'   =>  $request->option_type,
-                    'value'         =>  $boolean,
-                    'question_id'   =>  $question->id,
-                    'created_at'    =>  date('Y-m-d H:m:i'),
-                    'updated_at'    =>  date('Y-m-d H:m:i')
-                ]);
-        }
+        //     if($request->value[0] == $key) $boolean = true;
+
+            // DB::table('question_options')
+            //     ->where('id', $key)
+            //     ->update([
+            //         'option'        =>  $value[0],
+            //         'option_type'   =>  $request->option_type,
+            //         'value'         =>  $boolean,
+            //         'question_id'   =>  $question->id,
+            //         'created_at'    =>  date('Y-m-d H:m:i'),
+            //         'updated_at'    =>  date('Y-m-d H:m:i')
+            //     ]);
+        // }
 
         flash('La pregunta se ha actualizo correctamente', 'success');
         return redirect()->route('admin.question.index');
