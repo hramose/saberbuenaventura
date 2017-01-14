@@ -12,7 +12,7 @@ class Pre_icfes_result extends Model
     protected $fillable = ['codigo_registro' ,'lectura_critica', 'matematicas', 'sociales_y_ciudadanas', 'ciencias_naturales', 'ingles', 'total_score', 'student_id', 'pre_icfes_id'];
 
     public function student(){
-    	return; $this->belongsTo('App\Student');
+    	return $this->belongsTo('App\Student');
     }
 
     public function pre_icfes(){

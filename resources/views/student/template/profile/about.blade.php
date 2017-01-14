@@ -13,45 +13,52 @@
 				<div class="profile_info">
 					<div class="row">
 						<div class="col-md-6 col-xs-6">
-							<p>
-								<span>Nombre </span> : {{$student->name}}
-							</p>
+							<div class="row">
+								<div class="col-md-4 col-xs-4">Nombre</div>
+								<div class="col-md-8 col-xs-8">{{$student->name}}</div>
+							</div>
 						</div>
 						<div class="col-md-6 col-xs-6">
-							<p>
-								<span>Apellidos </span> : {{$student->last_name}}
-							</p>
+							<div class="row">	
+								<div class="col-md-4 col-xs-4">Apellidos</div>
+								<div class="col-md-8 col-xs-8">{{$student->last_name}}</div>
+							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6 col-xs-6">
-							<p>
-								<span>Tipo de documento </span> : {{$student->type_document}}
-							</p>
+							<div class="row">
+								<div class="col-md-4 col-xs-6">Tipo de documento</div>
+								<div class="col-md-8 col-xs-6">{{$student->type_document}}</div>	
+							</div>
 						</div>
 						<div class="col-md-6 col-xs-6">
-							<p>
-								<span>Numero de documento </span> : {{$student->number_document}}
-							</p>
+							<div class="row">
+								<div class="col-md-4 col-xs-6">Numero de documento</div>
+								<div class="col-md-8 col-xs-6">{{$student->number_document}}</div>	
+							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6 col-xs-6">
-							<p>
-								<span>Sexo </span> : {{$student->sex}}
-							</p>
+							<div class="row">
+								<div class="col-md-4 col-xs-6">Sexo</div>
+								<div class="col-md-8 col-xs-6">{{$student->sex}}</div>
+							</div>
 						</div>
 						<div class="col-md-6 col-xs-6">
-							<p>
-								<span>Fecha de nacimiento </span> : {{$student->birthday}}
-							</p>
+							<div class="row">
+								<div class="col-md-4 col-xs-6">Fecha de nacimiento</div>
+								<div class="col-md-8 col-xs-6">{{$student->birthday}}</div>
+							</div>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6">
-							<p>
-								<span>Correo electronico </span> : {{$student->email}}
-							</p>
+						<div class="col-md-6 col-xs-6">
+							<div class="row">
+								<div class="col-md-4 col-xs-6">Correo electronico</div>
+								<div class="col-md-8 col-xs-6">{{$student->email}}</div>
+							</div>
 						</div>
 					</div>
 				</div>

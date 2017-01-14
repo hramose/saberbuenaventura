@@ -171,15 +171,30 @@ class PreicfesController extends Controller
         }
     }
 
+    public function description($id){
+        $preicfes   = Pre_icfes::find($id);
+        $preicfes->areas;
+        $results = $preicfes->results->sortByDesc('total_score');
+
+        $results->each(function($results){
+            $results->student;
+        });
+
+        // dd($results);
+        return view('institution.partials.preicfes.description')
+                ->with('preicfes', $preicfes)
+                ->with('results', $results);
+    }
+
     public function descriptionTest($id){
         $student    = Auth()->guard('students')->user();
         $preicfes   = Pre_icfes::find($id);
         $preicfes_result    = count(Pre_icfes_result::getResult($student->id, $preicfes->id));
         $preicfes->areas;
 
-        if($preicfes->state == "finalizado"){
-            return redirect()->route('student.preicfesAll');
-        }
+        // if($preicfes->state == "finalizado"){
+        //     return redirect()->route('student.preicfesAll');
+        // }
 
         return view('student.template.preicfes.descriptionTest')
                 ->with('student_id', $student->id)

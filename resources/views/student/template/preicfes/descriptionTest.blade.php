@@ -1,5 +1,6 @@
 @extends('student.template.preicfes.testTemplate')
 
+
 @section('panel_content')
 	<div class="panel panelBox panelActivity">
 		<header class="panel_header clearfix">

@@ -16,11 +16,14 @@
 					
 						$start_date = Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $pre_icfes->start_date);
 						Carbon\Carbon::setToStringFormat('d-n-Y ');
+
+						$date = new App\Date();
+						$date->setDate($start_date);
 					?>
 					<div class="preicfes_test">
 						<div class="clearfix">
 							<h4 class="title_preicfes pull-left">{!! $pre_icfes->name !!}</h4>
-							<a class="pull-right" ><i class="fa fa-clock-o"></i>{!! ' '.$start_date !!}</a >
+							<a class="pull-right date" ><i class="fa fa-clock-o"></i>{!! ' '. $date->getFullDate() !!}</a >
 						</div>
 						<div class="row">
 							<div class="col-md-12">

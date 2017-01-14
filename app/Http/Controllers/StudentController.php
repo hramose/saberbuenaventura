@@ -78,7 +78,17 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        //
+        $student = Student::find($id);
+        $pre_icfes_result = $student->results;
+
+        $pre_icfes_result->each(function($pre_icfes_result){
+            $pre_icfes_result->pre_icfes->areas;
+        });
+
+        // dd($pre_icfes_result[0]);
+        return  view('institution.partials.student.show')
+                ->with('student', $student)
+                ->with('pre_icfes_result', $pre_icfes_result);
     }
 
     /**

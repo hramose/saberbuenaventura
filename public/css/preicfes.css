@@ -9,6 +9,10 @@
 	margin: 15px auto;
 } 
 
+a.date:hover{
+	text-decoration: underline;
+}
+
 .paginator{
 	padding: 10px;
 }
@@ -31,6 +35,21 @@
 	margin-bottom: 23px;
 }
 
+.progress-bar-insuficiente, .progress-bar--a{
+	background-color: #d9534f;
+}
+
+.progress-bar-minimo, .progress-bar-a1{
+	background-color: #f0ad4e;
+}
+
+.progress-bar-satisfactorio, .progress-bar-a2{
+	background-color: #5bc0de
+}
+
+.progress-bar-avanzado, .progress-bar-b2{
+	background-color: #5cb85c;
+}
 
 .page-content{
 	padding: 10px 15px;	

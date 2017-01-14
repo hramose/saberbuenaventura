@@ -133,6 +133,11 @@ Route::group(['prefix' => 'institution', 'middleware' => 'institution'], functio
 		'uses'	=>	'PreicfesController@destroy',
 		'as'	=>	'institution.preicfes.destroy'
 	]);
+	
+	Route::get('preicfes/{id}/description', [
+		'uses'	=>	'PreicfesController@description',
+		'as'	=>	'institution.preicfes.description'
+	]);
 
 });	
 
