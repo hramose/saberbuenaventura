@@ -13,7 +13,8 @@
 			<div class="container-fluid">
 				{!! Form::open(['route' => ['student.student.update', $student], 'method'=> 'PUT']) !!}
 					<div class="row">
-						{!! Form::hidden('request', 'changeInfo', []) !!}
+						{!! Form::hidden('request_rol', 'student', []) !!}
+						{!! Form::hidden('request_method', 'UpdateInfo', []) !!}
 						<div class="col-md-6">
 							<div class="form-group">
 								{!! Form::label('name', 'Nombre', []) !!}
@@ -58,8 +59,8 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								{!! Form::label('email', 'Correo electronico', []) !!}
-								{!! Form::email('email', $student->email, ['class'=>'form-control', 'placeholder'=>'pepitoperez@correo.com', 'disabled']) !!}
+								{!! Form::label('email_di', 'Correo electronico', []) !!}
+								{!! Form::email('email_di', $student->email, ['class'=>'form-control', 'placeholder'=>'pepitoperez@correo.com', 'disabled']) !!}
 							</div>
 						</div>
 					</div>

@@ -13,7 +13,9 @@ use App\Student;
 use App\Pre_icfes;
 use App\Institution;
 use App\Http\Requests\StudentRequest;
+use App\Http\Requests\StudentUpdateRequest;
 use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Requests\UpdatePasswordRequest;
 
 class StudentController extends Controller
 {
@@ -76,7 +78,7 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, $rol='')
     {
         $student = Student::find($id);
         $pre_icfes_result = $student->results;
@@ -85,8 +87,12 @@ class StudentController extends Controller
             $pre_icfes_result->pre_icfes->areas;
         });
 
-        // dd($pre_icfes_result[0]);
-        return  view('institution.partials.student.show')
+        if($rol == 'admin')
+            $view = view('admin.partials.student.show');
+        else if($rol == 'institution')
+            $view = view('institution.partials.student.show');
+
+        return  $view
                 ->with('student', $student)
                 ->with('pre_icfes_result', $pre_icfes_result);
     }
@@ -97,14 +103,28 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id='', $rol='')
     {   
         $student = Student::find($id);
-        $classrooms = Class_room::where('institution_id', '=', Auth()->guard('institutions')->user()->id)->lists('name', 'id');
+        $classrooms = Class_room::where('institution_id', '=', $student->class_room->institution->id)->lists('name', 'id');
 
-        return  view('institution.partials.student.edit')
-                ->with('student', $student)
-                ->with('classrooms', $classrooms);
+        if($rol == 'student'){
+
+            $view = view('student.template.profile.edit')->with('student', $student);
+
+        }else if($rol == 'institution'){
+
+            $view = view('institution.partials.student.edit')
+                    ->with('student', $student)
+                    ->with('classrooms', $classrooms);
+
+        }else if($rol == 'admin'){
+            $view = view('admin.partials.student.edit')
+                    ->with('student', $student)
+                    ->with('classrooms', $classrooms);
+        }
+
+        return $view;
     }
 
     /**
@@ -114,91 +134,60 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StudentUpdateRequest $request, $id)
     {   
-        $student = Auth()->guard('students')->user();
 
-        if($request->input('request') == 'changePass'){
+        $student = Student::find($id);
+        $student->fill($request->all());
 
+        if($request->request_method == 'UpdateInfoFull'){
+            
             $rules = [
-                'current_password'      =>  'required|min:4',
-                'password'              =>  'required|min:4|confirmed',
-                'password_confirmation' =>  'required|min:4',
+                'type_document'         => 'required',
+                'number_document'       => 'required|min:5|integer',
+                'class_room_id'         => 'required',
+                'email'                 => 'required|min:10|email',
             ];
 
             $messages = [
-                'current_password.required'         =>  'La contraseña actual es requerida',
-                'current_password.min:4'            =>  'La contraseña actual debe de ser minimo de 4 caracteres',
-                'password.confirmed'                =>  'Las contraseñas no coinciden',
-                'password_confirmation.required'    =>  'La confirmación de la contraseña es requerida',
-                'password_confirmation.min:4'       =>  'La confirmación de la contraseña actual debe de ser minimo de 4 caracteres',
+                'type_document.required'         =>  'El tipo de documento es requerido',
+                'number_document.required'       =>  'El número de documento es requerido',
+                'number_document.min:5'     =>  'El número de documento debe tener mas de 5 números',
+                'number_document.integer'   =>  'El Número de documento debe ser númerico',
+                'class_room_id.required'    =>  'El salón de clase es requerido',
+                'email.required'            =>  'El email es requerido',
+                'email.min:10'              =>  'El email debe tener minimo 10 caracteres',
+                'email.email'               =>  'Ingrese un email valido'
             ];
 
             $validator = Validator::make($request->all(), $rules, $messages);
 
             if($validator->fails()){
 
-                return redirect('student/editPass')
+                return redirect()
+                        ->back()
                         ->withErrors($validator)
                         ->withInput();
-            }else{
-                if(Hash::check($request->current_password, $student->password)){
-                    $student_obj = new Student();
-                    $student_obj->where('email','=',$student->email)
-                                ->update([
-                                    'password' => bcrypt($request->password)
-                                ]);
-
-                    flash('La contraseña se ha actualizado correctamente', 'success');
-                    return redirect()->route('student.about');
-                }else{
-                    return redirect('student/editPass')
-                            ->with('message', 'Contraseña incorrecta');
-                }
-            } 
-        }else if($request->input('request') == 'changeInfo'){
-            $rules = [
-                'name'      =>  'required|min:2',
-                'last_name' =>  'required|min:4',
-                'sex'       =>  'required',
-                'birthday'  =>  'required',
-            ];
-
-            $messages = [
-                'name.required'      =>  'La contraseña actual es requerida',
-                'name.min:2'         =>  'La contraseña actual debe de ser minimo de 4 caracteres',
-                'last_name.required' =>  'Las contraseñas no coinciden',
-                'last_name.min:2'    =>  'La confirmación de la contraseña es requerida',
-                'sex.required'       =>  'La confirmación de la contraseña actual debe de ser minimo de 4 caracteres',
-                'birthday'           =>  'required',
-            ];
-
-            $validator = Validator::make($request->all(), $rules, $messages);
-
-            if($validator->fails()){
-
-                return redirect('student/editInfo')
-                        ->withErrors($validator)
-                        ->withInput();
-            }else{
-                $student_obj    =   Student::find($student->id);
-                $student_obj->fill($request->all());
-                $student_obj->save();
-
-                flash('Los datos se han actualizado correctamente', 'success');
-                return redirect()->route('student.about');
             }
+        }
+
+        $student->save();
+        flash("Información Actualizada con exito", 'success');
+
+        if($request->request_rol == 'admin'){
+            
+            return redirect()->route('admin.student.show', [$student->id, 'admin']);
+
+        }else if($request->request_rol == 'institution'){
+
+            return redirect()->route('institution.student.show', [$student->id, 'institution']);
+
         }else{
 
-            $student           = Student::find($id);
-            $student->fill($request->all());
-            $student->password = bcrypt($request->password);
-            $student->save();
+            return redirect()->route('student.about');
 
-            flash("Se han Actualizados los datos del estudiante <b>$student->name $student->last_name</b> correctamente", 'success');
-
-            return redirect()->route('institution.student.index');
         }
+
     }
 
     /**
@@ -279,10 +268,79 @@ class StudentController extends Controller
                 ->with('student', $student);   
     }
 
-    public function editPass(){
+    public function changeMyPass(){
+
         $student = Auth()->guard('students')->user();
 
-        return  view('student.template.profile.editPass')
+        return view('student.template.profile.editPass')
                 ->with('student', $student);
+    }
+
+    public function editPass($id='', $rol){
+
+        $student = Student::find($id);
+
+        if($rol == 'admin'){
+            $view = view('admin.partials.student.changePass');
+        }else if($rol == 'institution'){
+            $view = view('institution.partials.student.changePass');
+        }
+
+
+        return  $view->with('student', $student);
+    }
+
+    public function updatePass(UpdatePasswordRequest $request, $id){
+        
+        $student = Student::find($id);
+
+        if($request->request_rol == 'student'){
+
+            $rules = [
+                'current_password'      =>  'required|min:4',
+            ];
+
+            $messages = [
+                'current_password.required' =>  'La contraseña actual es requerida',
+                'current_password.min:4'    =>  'La contraseña actual debe de ser minimo de 4 caracteres',
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+
+            if($validator->fails()){
+
+                return redirect()
+                        ->back()
+                        ->withErrors($validator)
+                        ->withInput();
+            }else{
+
+                if(!Hash::check($request->current_password, $student->password)){
+
+                    return  redirect()
+                            ->back()
+                            ->with('message', 'Contraseña incorrecta');
+                }
+            }
+
+        }
+        
+        $student->password = bcrypt($request->password);
+        $student->save();
+        flash('La contraseña se ha actualizado correctamente', 'success');
+        
+        if($request->request_rol == 'admin'){
+            
+            return redirect()->route('admin.student.show', [$student->id, 'admin']);
+
+        }else if($request->request_rol == 'institution'){
+
+            return redirect()->route('institution.student.show', [$student->id, 'institution']);
+
+        }else{
+
+            return redirect()->route('student.about');
+
+        }
     }
 }

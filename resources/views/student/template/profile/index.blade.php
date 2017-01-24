@@ -10,7 +10,6 @@
 	</div>
 	<div class="">
 		<div class="row">
-			@include('complements.flash')
 			<div class="col-md-3 profile-nav sidebar_profile">
 				@include('student.template.sidebar')
 			</div>

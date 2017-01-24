@@ -23,7 +23,7 @@
 				<th>estado</th>
 				<th>Fecha</th>
 				<th>Grado</th>
-				<th>Acción</th>
+				<th>Ación</th>
 			</tr>
 		</thead>
 		<tbody>

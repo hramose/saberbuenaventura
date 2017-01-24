@@ -60,7 +60,16 @@ class InstitutionController extends Controller
      */
     public function show($id)
     {
-        //
+        $institution = Institution::find($id);
+        $class_rooms = $institution->class_rooms;
+        $class_rooms->each(function($class_rooms){
+            $class_rooms->students;
+        });
+
+        // dd($class_rooms);
+        return view('admin.partials.institution.show')
+                ->with('institution', $institution)
+                ->with('class_rooms', $class_rooms);
     }
 
     /**

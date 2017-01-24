@@ -129,7 +129,7 @@
 			<p>
 				Para mas información puede contactarnos en <a href="#">saberbuenaventura@gmail.com</a>
 			</p>
-		</div>
+		</div><br><br><br><br><br><br>
 	</div>
 	<div class="paper2">
 		<table class="table table-performan text-center">

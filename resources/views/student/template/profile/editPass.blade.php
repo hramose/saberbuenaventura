@@ -2,7 +2,7 @@
 
 @section('panel_content')
 	<div class="">
-		{{-- @include('complements.errors') --}}
+		@include('complements.errors')
 		<div class="panel panelBox panel-card">
 			<header class="panel_header">
 				<h3>
@@ -11,9 +11,10 @@
 				</h3>
 			</header>
 			<div class="container-fluid">
-				{!! Form::open(['route' => ['student.student.update', $student], 'method'=> 'PUT']) !!}
+				{!! Form::open(['route' => ['student.updatePass', $student], 'method'=> 'POST']) !!}
 					<div class="row">
-						{!! Form::hidden('request', 'changePass', []) !!}
+						{!! Form::hidden('request_rol', 'student', []) !!}
+						{!! Form::hidden('request_method', 'UpdatePassword', []) !!}
 						<div class="col-md-8">
 							<div class="form-group">
 								{!! Form::label('current_password', 'Contraseña actual', []) !!}

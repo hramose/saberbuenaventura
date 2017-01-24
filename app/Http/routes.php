@@ -11,13 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index');
+Route::get('/cerfificate',[ 
+	'uses'	=> 'HomeController@certificate',
+	'as'	=>	'home.certificate'	
+]);
 
 Route::auth();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home', 'HomeController@home');
 
 Route::group(['prefix'=>'login'], function(){
 
@@ -31,6 +33,17 @@ Route::group(['prefix'=>'login'], function(){
 	Route::post('/student', 'Auth\AuthStudentController@login');
 });
 
+Route::group(['prefix'=>'mail'], function(){
+
+	Route::post('contact',[
+		'uses'	=> 'MailController@contact',
+		'as'	=>	'mail.contact'
+		// ,function(){
+		// 	dd(Config::get('mail'));
+		// }	
+	]);
+});
+
 Route::group(['prefix'=>'ajax'], function(){
 
 	Route::get('{id}/getCompetences', 'AreaController@getCompetencesByArea');
@@ -38,6 +51,10 @@ Route::group(['prefix'=>'ajax'], function(){
 	Route::get('{grade}/getArea', 'AreaController@getAreaByGrade');
 
 	Route::get('changeStatus&change={status}&preicfes={id}', 'PreicfesController@PreIcfeschangeStatus');
+	Route::get('getCertificates&number_document={number_document}&type_document={type_document}', [
+		'uses'	=>'HomeController@getCertificates',
+		'as'	=>'cerfificate.getByCedula'
+	]);
 
 });
 
@@ -58,6 +75,24 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
 	Route::get('institucion/{id}/destroy', [
 		'uses'	=>	'InstitutionController@destroy',
 		'as'	=> 'admin.institution.destroy'
+	]);
+
+	Route::resource('student', 'StudentController');
+	Route::get('student/show/student={id}&role={rol}',[
+		'uses'	=> 'StudentController@show',
+		'as'	=>	'admin.student.show'
+	]);
+	Route::get('student/edit/student={id}&role={rol}', [
+		'uses'	=> 'StudentController@edit',
+		'as'	=>	'admin.student.edit'
+	]);
+	Route::get('editPass/student={id}&role={rol}',[
+		'uses'	=>	'StudentController@editPass',
+		'as'	=>	'admin.student.editPass'
+	]);
+	Route::post('student/updatePass/{student}', [
+		'uses'	=>	'StudentController@updatePass',
+		'as'	=>	'admin.student.updatePass'
 	]);
 
 	Route::resource('area', 'AreaController');
@@ -84,11 +119,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
 		'as'	=> 'admin.competence.destroy'
 	]);
 
-	Route::resource('achievement', 'AchievementController');
-	Route::get('achievement/{id}/destroy', [
-		'uses'	=>	'AchievementController@destroy',
-		'as'	=> 'admin.achievement.destroy'
-	]);
 
 	Route::resource('author', 'AuthorController');
 	Route::get('author/{id}/destroy', [
@@ -123,9 +153,25 @@ Route::group(['prefix' => 'institution', 'middleware' => 'institution'], functio
 	]);
 
 	Route::resource('student', 'StudentController');
+	Route::get('student/show/student={id}&role={rol}', [
+		'uses'	=> 'StudentController@show',
+		'as'	=>	'institution.student.show'
+	]);
+	Route::get('student/edit/student={id}&role={rol}', [
+		'uses'	=> 'StudentController@edit',
+		'as'	=>	'institution.student.edit'
+	]);
+	Route::post('student/updatePass/{student}', [
+		'uses'	=>	'StudentController@updatePass',
+		'as'	=>	'institution.student.updatePass'
+	]);
 	Route::get('student/{id}/destroy', [
 		'uses'	=>	'StudentController@destroy',
 		'as'	=>	'institution.student.destroy'
+	]);
+	Route::get('editPass/student={id}&role={rol}',[
+		'uses'	=>	'StudentController@editPass',
+		'as'	=>	'institution.editPass'
 	]);
 
 	Route::resource('preicfes', 'PreicfesController');
@@ -165,14 +211,18 @@ Route::group(['prefix' => 'student', 'middleware' => 'student'], function() {
 		'as'	=>	'student.about'
 	]);
 
-	Route::get('editInfo', [
-		'uses'	=> 'StudentController@editInfo',
-		'as'	=>	'student.editInfo'
+	Route::get('edit/student={id}&role={rol}', [
+		'uses'	=> 'StudentController@edit',
+		'as'	=>	'student.edit'
 	]);
 
-	Route::get('editPass',[
-		'uses'	=>	'StudentController@editPass',
-		'as'	=>	'student.editPass'
+	Route::get('changeMyPass',[
+		'uses'	=>	'StudentController@changeMyPass',
+		'as'	=>	'student.changeMyPass'
+	]);
+	Route::post('updatePass/{student}', [
+		'uses'	=>	'StudentController@updatePass',
+		'as'	=>	'student.updatePass'
 	]);
 
 	Route::get('preicfesAll', [

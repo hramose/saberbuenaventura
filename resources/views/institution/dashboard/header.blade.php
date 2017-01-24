@@ -1,13 +1,13 @@
 <header id="nav-header" class="clearfix">
     <div class="col-md-5">
-        {!! Form::open() !!}
+        {{-- {!! Form::open() !!}
             {!! Form::text('header-search', null, ['id'=>'header-search' ,'placeholder'=>'Busca algo...']) !!}
-        {!! Form::close() !!}
+        {!! Form::close() !!} --}}
     </div>
     <div class="col-md-7">
         <ul class="pull-right">
             <li class="welcome">Bienvenido {{ Auth()->guard('institutions')->user()->name }}</li>
-            <li class="fixed-width">
+            {{-- <li class="fixed-width">
                 <a href="#">
                     <span class="glyphicon glyphicon-bell" arial-hidden="true"></span>
                     <span class="label label-warning">3</span>
@@ -18,7 +18,7 @@
                     <span class="glyphicon glyphicon-envelope" arial-hidden="true"></span>
                     <span class="label label-message">3</span>
     	        </a>
-            </li>
+            </li> --}}
             <li>
                 <a href="{{ route('institution.logout') }}">
                     <span class="glyphicon glyphicon-log-out" arial-hidden="true"></span>

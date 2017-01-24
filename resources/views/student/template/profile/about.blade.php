@@ -4,74 +4,63 @@
 	<div class="">
 		<div class="panel panelBox panel-card">
 			<header class="panel_header">
-				<h4>
-					<i class="fa fa-user"></i>
-					Información personal
-				</h4>
+				<h4 class="text-center"><i class="fa fa-user"></i> Información personal</h4>
 			</header>
 			<div class="container-fluid">
-				<div class="profile_info">
-					<div class="row">
-						<div class="col-md-6 col-xs-6">
-							<div class="row">
-								<div class="col-md-4 col-xs-4">Nombre</div>
-								<div class="col-md-8 col-xs-8">{{$student->name}}</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-xs-6">
-							<div class="row">	
-								<div class="col-md-4 col-xs-4">Apellidos</div>
-								<div class="col-md-8 col-xs-8">{{$student->last_name}}</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-6 col-xs-6">
-							<div class="row">
-								<div class="col-md-4 col-xs-6">Tipo de documento</div>
-								<div class="col-md-8 col-xs-6">{{$student->type_document}}</div>	
-							</div>
-						</div>
-						<div class="col-md-6 col-xs-6">
-							<div class="row">
-								<div class="col-md-4 col-xs-6">Numero de documento</div>
-								<div class="col-md-8 col-xs-6">{{$student->number_document}}</div>	
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-6 col-xs-6">
-							<div class="row">
-								<div class="col-md-4 col-xs-6">Sexo</div>
-								<div class="col-md-8 col-xs-6">{{$student->sex}}</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-xs-6">
-							<div class="row">
-								<div class="col-md-4 col-xs-6">Fecha de nacimiento</div>
-								<div class="col-md-8 col-xs-6">{{$student->birthday}}</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-6 col-xs-6">
-							<div class="row">
-								<div class="col-md-4 col-xs-6">Correo electronico</div>
-								<div class="col-md-8 col-xs-6">{{$student->email}}</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="profile_info_footer clearfix">
-					<div class="pull-left">
-						<p>
-							<span>Ultima actualización </span>
-							: {{ $student->updated_at}}
-						</p>
-					</div>
-					<div class="pull-right">
-						<a href="{{ route('student.editInfo') }}" class="btn btn-primary">Editar Información</a>
-					</div>
+				@include('complements.flash')
+				<div class="profile_info div_center70">
+					<table class="table table-hover">
+						<tbody>
+							<tr>
+								<td>
+									<h5 class="text_bold">Nombre</h5>
+									<td>{{$student->name}}</td>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h5 class="text_bold">Apellidos</h5>
+									<td>{{$student->last_name}}</td>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h5 class="text_bold">Tipo de documento</h5>
+									<td>{{$student->type_document}}</td>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h5 class="text_bold">Numero de documento</h5>
+									<td>{{$student->number_document}}</td>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h5 class="text_bold">Sexo</h5>
+									<td>{{$student->sex}}</td>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h5 class="text_bold">Fecha de nacimiento</h5>
+									<td>{{$student->birthday}}</td>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h5 class="text_bold">Correo electronico</h5>
+									<td>{{$student->email}}</td>
+								</td>
+							</tr>
+							<tr>
+								<td class="profile_info_footer"><p>Ultima actualización: {{ $student->updated_at}}</p></td>
+								<td>
+									<a href="{{route('student.edit', [$student->id,'student'])}}" class="btn-block"><i class="fa fa-edit"></i> Editar</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -80,31 +69,27 @@
 	<div class="">
 		<div class="panel panelBox panel-card">
 			<header class="panel_header">
-				<h4>
+				<h4 class="text-center">
 					<i class="fa fa-lock"></i>
 					Informacion contraseña
 				</h4>	
 			</header>
 			<div class="container-fluid">
-				<div class="profile_info">
-					<div class="row">
-						<div class="col-md-6 col-xs-6">
-							<p>
-								<span>Contraseña </span> : **************
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="profile_info_footer clearfix">
-					<div class="pull-left">
-						<p>
-							<span>Ultima actualización </span>
-							: {{ $student->updated_at}}
-						</p>
-					</div>
-					<div class="pull-right">
-						<a href="{{ route('student.editPass') }}" class="btn btn-primary">Editar Información</a>
-					</div>
+				<div class="profile_info div_center70">
+					<table class="table table-hover">
+						<tbody>
+							<tr>
+								<td>Contraseña</td>
+								<td>**************</td>
+							</tr>
+							<tr>
+								<td class="profile_info_footer"><p>Ultima actualización: {{ $student->updated_at}}</p></td>
+								<td>
+									<a href="{{ route('student.changeMyPass') }}" class="btn-block"><i class="fa fa-edit"></i> Editar</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -113,23 +98,25 @@
 	<div class="">
 		<div class="panel panelBox">
 			<header class="panel_header">
-				<h4>
+				<h4 class="text-center">
 					<i class="fa fa-institution"></i>
 					Informacion institucional
 				</h4>	
 			</header>
 			<div class="container-fluid">
-				<div class="profile_info">
-					<div class="col-md-6 col-xs-6">
-						<p>
-							<span>Salon de clase </span> : {{$student->class_room->name}}
-						</p>
-					</div>
-					<div class="col-md-6 col-xs-6">
-						<p>
-							<span>Colegio </span> : {{$student->class_room->institution->name}}
-						</p>
-					</div>
+				<div class="profile_info div_center70">
+					<table class="table table-hover">
+						<tbody>
+							<tr>
+								<td>Salon de clase</td>
+								<td>{{$student->class_room->name}}</td>
+							</tr>
+							<tr>
+								<td>Colegio</td>
+								<td>{{$student->class_room->institution->name}}</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>

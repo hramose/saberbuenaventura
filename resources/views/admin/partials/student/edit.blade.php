@@ -1,4 +1,4 @@
-@extends('institution.dashboard.1-colum')
+@extends('admin.dashboard.template.1-column')
 
 @section('page_title')
 	{!! 'Editar Alumno | '.$student->name.' '.$student->last_name !!}
@@ -6,9 +6,11 @@
 
 @section('breadcrums')
 	<ol class="breadcrumb">
-	  <li><a href="{{ route('institution.main') }}">Inicio</a></li>
-	  <li><a href="{{ route('institution.student.index') }}">Alumnos</a></li>
-	  <li><a href="{{ route('institution.student.show', [$student->id, 'institution']) }}">{!! $student->name.' '.$student->last_name !!}</a></li>
+	  <li><a href="{{ route('admin.main') }}">Inicio</a></li>
+	  <li><a href="{{ route('admin.institution.index') }}">Instituciones</a></li>
+	  <li><a href="{{ route('admin.institution.show', $student->class_room->institution->id) }}">{!! $student->class_room->institution->name !!}</a></li>
+	  <li class="active">alumno</li>
+	  <li><a href="{{ route('admin.student.show', [$student->id, 'admin']) }}">{!! $student->name.' '.$student->last_name !!}</a></li>
 	  <li class="active">Editar</li>
 	</ol>
 @endsection
@@ -16,8 +18,8 @@
 @section('row')
 	@include('complements.errors')
 
-	{!! Form::open(['route' => ['institution.student.update', $student], 'method'=> 'PUT']) !!}
-		{!! Form::hidden('request_rol', 'institution', []) !!}
+	{!! Form::open(['route' => ['admin.student.update', $student], 'method'=> 'PUT']) !!}
+		{!! Form::hidden('request_rol', 'admin', []) !!}
 		{!! Form::hidden('request_method', 'UpdateInfoFull', []) !!}
 		<div class="row">
 			<div class="col-md-6">

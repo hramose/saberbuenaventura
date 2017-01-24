@@ -1,4 +1,4 @@
-@extends('institution.dashboard.1-colum')
+@extends('admin.dashboard.template.1-column')
 
 @section('page_title')
 	{!! 'Ver Alumno | '.$student->name.' '.$student->last_name !!}
@@ -12,7 +12,8 @@
 @section('breadcrums')
 	<ol class="breadcrumb">
 	  <li><a href="{{ route('institution.main') }}">Inicio</a></li>
-	  <li><a href="{{ route('institution.student.index') }}">Alumnos</a></li>
+      <li><a href="{{ route('admin.institution.show', $student->class_room->institution->id) }}">{!! $student->class_room->institution->name !!}</a></li>
+	  <li class="active">alumno</li>
 	  <li class="active">{!! $student->name.' '.$student->last_name !!}</li>
 	  <li class="active">Ver</li>
 	</ol>
@@ -75,7 +76,7 @@
                         </td>
                     </tr>
         			<tr>
-        				<td class="text-right" colspan="2"><a class="btn-block" href="{{ route('institution.student.edit', [$student->id,'institution']) }}"><i class="fa fa-edit"></i> Editar</a></td>
+        				<td class="text-right" colspan="2"><a class="btn-block" href="{{ route('admin.student.edit', [$student->id,'admin']) }}"><i class="fa fa-edit"></i> Editar</a></td>
         			</tr>
         		</tbody>
         	</table>
@@ -89,7 +90,7 @@
         			<tr>
         				<td><h5 class="text_bold">Contraseña</h5></td>
         				<td>**********</td>
-        				<td class="text-right"><a href="{{ route('institution.editPass', [$student->id, 'institution'])}}"><i class="fa fa-edit"></i> Editar</a></td>
+        				<td class="text-right"><a href="{{ route('admin.student.editPass', [$student->id, 'admin'])}}"><i class="fa fa-edit"></i> Editar</a></td>
         			</tr>
         		</tbody>
         	</table>

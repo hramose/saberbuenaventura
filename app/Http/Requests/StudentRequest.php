@@ -27,13 +27,13 @@ class StudentRequest extends Request
             'name'                  => 'required|min:2',
             'last_name'             => 'required|min:2',
             'type_document'         => 'required',
-            'number_document'       => 'required|min:2',
+            'number_document'       => 'required|min:2|unique:students',
             'sex'                   => 'required',
             'birthday'              => 'required|min:2',
             'class_room_id'         => 'required',
-            'email'                 => 'required|min:2|email',
+            'email'                 => 'required|min:2|email|unique:students',
             'password'              => 'required|min:4|confirmed',
-            'password_confirmation' =>  'required|min:4'
+            'password_confirmation' => 'required|min:4'
         ];
     }
 }

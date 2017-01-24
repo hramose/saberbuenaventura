@@ -41,4 +41,13 @@ class Student extends Authenticatable
                     ['password', '=', $password],
                 ])->get();
     }
+
+    public static function getByCedula($number_document, $type_document){
+        return  Student::select('*')
+                ->where([
+                    ['number_document', '=', $number_document],
+                    ['type_document', '=', $type_document]
+                ])
+                ->first();
+    }
 }

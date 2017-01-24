@@ -42,9 +42,7 @@
 						@endif
 					</td>
 					<td>
-						<a class="btn btn-info" title="Editar" href="{{ route('institution.student.edit', $student->id) }}"><i class="fa fa-edit"></i>
-						</a>
-						<a class="btn btn-default" title="Ver" href="{{ route('institution.student.show', $student->id) }}"><i class="fa fa-eye"></i>
+						<a class="btn btn-default" title="Ver" href="{{ route('institution.student.show', [$student->id, 'institution']) }}"><i class="fa fa-eye"></i>
 						</a>
 						<a class="btn btn-danger" title="Eliminar" href="{{ route('institution.student.destroy', $student->id) }}" onclick="return confirm('Desea eliminar este estudiante')"><i class="fa fa-trash"></i>
 						</a>

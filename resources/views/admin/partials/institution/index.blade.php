@@ -36,6 +36,8 @@
 					<td>
 						<a class="btn btn-info" title="Editar" href="{{ route('admin.institution.edit', $school->id) }}"><i class="fa fa-edit"></i>
 						</a>
+						<a class="btn btn-default" title="Ver" href="{{ route('admin.institution.show', $school->id) }}"><i class="fa fa-eye"></i>
+						</a>
 						<a class="btn btn-danger" title="Eliminar" href="{{ route('admin.institution.destroy', $school->id) }}" onclick="return confirm('Desea eliminar esta institución')"><i class="fa fa-trash"></i>
 						</a>
 					</td>
