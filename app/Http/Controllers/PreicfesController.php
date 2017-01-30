@@ -46,12 +46,24 @@ class PreicfesController extends Controller
     public function create()
     {   
         $institution = Auth()->guard('institutions')->user();
-        $classrooms = Institution::getCloassroomsList($institution->id);
+        $classrooms = Institution::getClassroomsList($institution->id);
         $areas = Area::orderBy('name','ASC')->lists('name', 'id');
 
         return  view('institution.partials.preicfes.create')
                 ->with('classrooms', $classrooms)
                 ->with('areas', $areas);
+    }
+
+    public function createByAdmin($institution_id)
+    {   
+
+        $classrooms = Institution::getClassroomsList($institution_id);
+        $areas = Area::orderBy('name','ASC')->lists('name', 'id');
+
+        return  view('admin.partials.preicfes.create')
+                ->with('classrooms', $classrooms)
+                ->with('areas', $areas)
+                ->with('institution', Institution::find($institution_id));
     }
 
     /**
@@ -75,12 +87,18 @@ class PreicfesController extends Controller
 
             $preicfes->areas()->sync($request->area_id);
             
-            flash("Se ha actualizado el pre-ICFES <b>$preicfes->name</b> correctamente",'success');
+            flash("Se ha creado el pre-ICFES <b>$preicfes->name</b> correctamente",'success');
+
+            if($request->request_rol == 'admin')
+                return redirect()->route('admin.preicfes.show', $preicfes->id);
 
             return redirect()->route('institution.preicfes.index');
         }
 
-        flash("Solo se pueden crear dos <b>(2)</b> pruebas por salón en un mes",'danger');
+        flash("Solo se pueden crear dos <b>(10)</b> pruebas por salón en un mes",'danger');
+
+        if($request->request_rol == 'admin')
+            return redirect()->route('admin.preicfes.show', $preicfes->id);
 
         return redirect()->route('institution.preicfes.index');
     }
@@ -96,6 +114,19 @@ class PreicfesController extends Controller
         //
     }
 
+    public function showByAdmin($id){
+        $preicfes   = Pre_icfes::find($id);
+        $preicfes->areas;
+        $results = $preicfes->results->sortByDesc('total_score');
+
+        $results->each(function($results){
+            $results->student;
+        });
+
+        return view('admin.partials.preicfes.show')
+                ->with('preicfes', $preicfes)
+                ->with('results', $results);
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -109,7 +140,7 @@ class PreicfesController extends Controller
         $my_areas = $preicfes->areas->lists('id')->ToArray();
 
         $institution = Auth()->guard('institutions')->user();
-        $classrooms = Institution::getCloassroomsList($institution->id);
+        $classrooms = Institution::getClassroomsList($institution->id);
         $areas = Area::orderBy('name','ASC')->lists('name', 'id');
 
         return  view('institution.partials.preicfes.edit')
@@ -121,6 +152,22 @@ class PreicfesController extends Controller
                 ->with('end_date', explode(' ', $preicfes->end_date));
     }
 
+    public function editByAdmin($id){
+
+        $preicfes = Pre_icfes::find($id);
+        
+        $my_areas = $preicfes->areas->lists('id')->ToArray();
+        $classrooms = Institution::getClassroomsList($preicfes->class_room->institution->id);
+        $areas = Area::orderBy('name','ASC')->lists('name', 'id');
+
+        return  view('admin.partials.preicfes.edit')
+                ->with('preicfes', $preicfes)
+                ->with('classrooms', $classrooms)
+                ->with('areas', $areas)
+                ->with('my_areas', $my_areas)
+                ->with('start_date', explode(' ', $preicfes->start_date))
+                ->with('end_date', explode(' ', $preicfes->end_date));
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -135,11 +182,15 @@ class PreicfesController extends Controller
         $preicfes->start_date   =   $request->start_date.' '.$request->hour_start;
         $preicfes->end_date     =   $request->end_date.' '.$request->hour_end;
         $preicfes->state        = $request->state;
+        
         $preicfes->save();
 
         $preicfes->areas()->sync($request->area_id);
 
         flash("Se ha actualizado el pre-ICFES <b>$preicfes->name</b> correctamente",'success');
+
+        if($request->request_rol == 'admin')
+            return redirect()->route('admin.preicfes.show', $preicfes->id);
 
         return redirect()->route('institution.preicfes.index');
     }
@@ -180,7 +231,6 @@ class PreicfesController extends Controller
             $results->student;
         });
 
-        // dd($results);
         return view('institution.partials.preicfes.description')
                 ->with('preicfes', $preicfes)
                 ->with('results', $results);

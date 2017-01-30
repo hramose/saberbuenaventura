@@ -381,6 +381,10 @@ section{
     /*line-height: 1.4;*/
 }
 
+.profile_info_footer{
+	color: #7a7a7a;
+}
+
 .section{
 	padding: 2rem 0;
 }

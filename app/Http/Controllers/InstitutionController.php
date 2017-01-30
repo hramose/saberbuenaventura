@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Hash;
 use App\Http\Requests;
 use App\Http\Requests\InstitutionCreate;
 use App\Http\Requests\InstitutionUpdate;
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Institution;
 
 class InstitutionController extends Controller
@@ -64,9 +66,9 @@ class InstitutionController extends Controller
         $class_rooms = $institution->class_rooms;
         $class_rooms->each(function($class_rooms){
             $class_rooms->students;
+            $class_rooms->pre_icfes;
         });
 
-        // dd($class_rooms);
         return view('admin.partials.institution.show')
                 ->with('institution', $institution)
                 ->with('class_rooms', $class_rooms);
@@ -86,6 +88,14 @@ class InstitutionController extends Controller
                ->with('school', $school);
     }
 
+    public function editPassByAdmin($id){
+
+        $institution = Institution::find($id);
+
+        // dd($institution);
+        return  view('admin.partials.institution.editPass')
+                ->with('institution',$institution);
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -102,6 +112,24 @@ class InstitutionController extends Controller
         flash('La institución <b>'.$school->name.'</b> se ha actualizado con exito', 'success');
         return redirect()->route('admin.institution.index');
 
+    }
+
+    public function updatePass(UpdatePasswordRequest $request, $id){
+
+        $institution = Institution::find($id);
+        $institution->password = bcrypt($request->password);
+        $institution->save();
+        flash('La contraseña se ha actualizado correctamente', 'success');
+        
+        if($request->request_rol == 'admin'){
+            
+            return redirect()->route('admin.institution.show', $institution->id);
+
+        }
+        // else if($request->request_rol == 'institution'){
+
+        //     return redirect()->route('institution.institution.show', [$institution->id, 'institution']);
+        // }
     }
 
     /**

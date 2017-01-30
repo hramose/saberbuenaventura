@@ -23,6 +23,7 @@ class UpdatePasswordRequest extends Request
      */
     public function messages(){
         return [
+            'password.required'                 =>  'La contraseña es requerida',
             'password.confirmed'                =>  'Las contraseñas no coinciden',
             'password_confirmation.required'    =>  'La confirmación de la contraseña es requerida',
             'password_confirmation.min:4'       =>  'La confirmación de la contraseña actual debe de ser minimo de 4 caracteres',

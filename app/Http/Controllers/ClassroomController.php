@@ -20,7 +20,7 @@ class ClassroomController extends Controller
     {
         // $classrooms = Class_room::orderBy('name', 'ASC')->paginate(5);
         $institution = Auth()->guard('institutions')->user();
-        $classrooms = Institution::getCloassrooms($institution->id);
+        $classrooms = Institution::getClassrooms($institution->id);
 
         return  view('institution.partials.classroom.index')
                 ->with('classrooms', $classrooms);
@@ -34,6 +34,10 @@ class ClassroomController extends Controller
     public function create()
     {
         return view('institution.partials.classroom.create');
+    }
+
+    public function createByAdmin(){
+        return view('admin.partials.classroom.create');
     }
 
     /**
@@ -95,6 +99,7 @@ class ClassroomController extends Controller
         $classroom->save();
 
         flash("El salon de clase <b>$request->name</b> se ha actualizado correctamente", 'success');
+        if($request->request_rol == 'admin') return redirect()->route('admin.institution.show', $request->institution_id);
 
         return redirect()->route('institution.classroom.index');
     }

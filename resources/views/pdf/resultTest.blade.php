@@ -123,13 +123,13 @@
 				Para consultar la veracidad de este documento presente ingrese a
 			</p>
 			<p>
-				<a href="/certificados" target="_blank">www.saberbuenaventura.co/certificados</a>
+				<a href="/cerfificate" target="_blank">www.saberbuenaventura.co/certificados</a>
 				y digite el número de registro <b>{!! $result->codigo_registro!!}</b>
 			</p>
 			<p>
 				Para mas información puede contactarnos en <a href="#">saberbuenaventura@gmail.com</a>
 			</p>
-		</div><br><br><br><br><br><br>
+		</div><br><br><br><br>
 	</div>
 	<div class="paper2">
 		<table class="table table-performan text-center">

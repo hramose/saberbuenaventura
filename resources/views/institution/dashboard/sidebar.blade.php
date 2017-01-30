@@ -1,7 +1,7 @@
 <h1>Navigation</h1>
 <ul id="sidebar">
 	<li class="active">
-		<a href="{{ route('admin.main') }}">
+		<a href="{{ route('institution.main') }}">
 			<span class="glyphicon glyphicon-th"></span>
 			<span>Inicio</span>
 		</a>

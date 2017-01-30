@@ -33,13 +33,13 @@ class Institution extends Authenticatable
                 ->orderBy('id', 'DES')->paginate(3);
     }
 
-    public static function getCloassrooms($id_institution){
+    public static function getClassrooms($id_institution){
         return Class_room::select('*')
                 ->where('institution_id','=', $id_institution)
                 ->orderBy('id', 'DES')->paginate(5);   
     } 
 
-    public static function getCloassroomsList($id_institution){
+    public static function getClassroomsList($id_institution){
         return Class_room::select('*')
                 ->where('institution_id','=', $id_institution)
                 ->orderBy('id', 'DES')

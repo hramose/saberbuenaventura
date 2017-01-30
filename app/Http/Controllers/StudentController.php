@@ -65,9 +65,12 @@ class StudentController extends Controller
         $student = new Student($request->all());
         $student->state = 'activo';
         $student->password = bcrypt($request->password);
+
         $student->save();
 
         flash("El estudiante <b>$student->name $student->last_name</b> ha si creado correctamente", 'success');
+
+        if($request->request_rol == 'admin') return redirect()->route('admin.institution.show', $request->institution_id);
 
         return redirect()->route('institution.student.index');
     }
@@ -87,10 +90,19 @@ class StudentController extends Controller
             $pre_icfes_result->pre_icfes->areas;
         });
 
-        if($rol == 'admin')
+        if($rol == 'admin'){
             $view = view('admin.partials.student.show');
-        else if($rol == 'institution')
+        }
+        else if($rol == 'institution'){
+            $institution = Auth()->guard('institutions')->user();
+
+            if($student->class_room->institution->id != $institution->id)
+                return redirect()->back();
+
             $view = view('institution.partials.student.show');
+
+
+        }
 
         return  $view
                 ->with('student', $student)
@@ -256,7 +268,7 @@ class StudentController extends Controller
         $pre_icfess->each(function($pre_icfess){
             $pre_icfess->areas;
         });
-
+        
         return  view('student.template.preicfes.take')
                 ->with('pre_icfess', $pre_icfess);   
     }

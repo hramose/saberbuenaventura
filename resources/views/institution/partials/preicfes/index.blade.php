@@ -38,7 +38,15 @@
 				?>
 				<tr>
 					<td>{!! $preicfes->name !!}</td>
-					<td>{!! $preicfes->state !!}</td>
+					<td>
+						@if($preicfes->state == 'en curso') 
+							<span class="label label-warning">{!! $preicfes->state !!}</span>
+						@elseif($preicfes->state == 'finalizado')
+							<span class="label label-success">{!! $preicfes->state !!}</span>
+						@elseif($preicfes->state == 'pendiente')
+							<span class="label label-danger">{!! $preicfes->state !!}</span>
+						@endif
+					</td>
 					<td>{!! $date->getFullDate() !!}</td>
 					<td>{!! $preicfes->class_room->name!!}</td>
 					<td>

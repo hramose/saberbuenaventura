@@ -37,10 +37,7 @@ Route::group(['prefix'=>'mail'], function(){
 
 	Route::post('contact',[
 		'uses'	=> 'MailController@contact',
-		'as'	=>	'mail.contact'
-		// ,function(){
-		// 	dd(Config::get('mail'));
-		// }	
+		'as'	=>	'mail.contact'	
 	]);
 });
 
@@ -71,12 +68,28 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
 		'as'	=>	'admin.logout'
 	]);
     
+    // 
 	Route::resource('institution', 'InstitutionController');
-	Route::get('institucion/{id}/destroy', [
+	Route::get('institution/{id}/destroy', [
 		'uses'	=>	'InstitutionController@destroy',
 		'as'	=> 'admin.institution.destroy'
 	]);
+	Route::get('institution/{id}/editPass',[
+		'uses'	=>	'InstitutionController@editPassByAdmin',
+		'as'	=>	'admin.institution.editPass'
+	]);
+	Route::post('institution/updatePass/{student}', [
+		'uses'	=>	'InstitutionController@updatePass',
+		'as'	=>	'admin.institution.updatePass'
+	]);
+	// 
+	Route::resource('classroom', 'ClassroomController');
+	Route::get('classroom/create',[
+		'uses'	=>	'ClassroomController@createByAdmin',
+		'as'	=>	'admin.classroom.create'
+	]);
 
+	// 
 	Route::resource('student', 'StudentController');
 	Route::get('student/show/student={id}&role={rol}',[
 		'uses'	=> 'StudentController@show',
@@ -95,24 +108,28 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
 		'as'	=>	'admin.student.updatePass'
 	]);
 
+	// 
 	Route::resource('area', 'AreaController');
 	Route::get('area/{id}/destroy', [
 		'uses'	=>	'AreaController@destroy',
 		'as'	=> 'admin.area.destroy'
 	]);
 
+	// 
 	Route::resource('performance', 'Performance_controller');
 	Route::get('performance/{id}/destroy', [
 		'uses'	=>	'Performance_controller@destroy',
 		'as'	=> 'admin.performance.destroy'
 	]);
 
+	// 
 	Route::resource('asignature', 'AsignatureController');
 	Route::get('asignature/{id}/destroy', [
 		'uses'	=>	'AsignatureController@destroy',
 		'as'	=> 'admin.asignature.destroy'
 	]);
 
+	// 
 	Route::resource('competence', 'CompetenceController');
 	Route::get('competence/{id}/destroy', [
 		'uses'	=>	'CompetenceController@destroy',
@@ -120,16 +137,41 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
 	]);
 
 
+	// 
 	Route::resource('author', 'AuthorController');
 	Route::get('author/{id}/destroy', [
 		'uses'	=>	'AuthorController@destroy',
 		'as'	=> 'admin.author.destroy'
 	]);
 
+	// 
 	Route::resource('question', 'QuestionController');
 	Route::get('question/{id}/destroy', [
 		'uses'	=>	'QuestionController@destroy',
 		'as'	=> 'admin.question.destroy'
+	]);
+
+	// 
+	// Route::resource('preicfes', 'PreicfesController');
+	Route::get('preicfes/create/{institution}',[
+		'uses'	=>	'PreicfesController@createByAdmin',
+		'as'	=>	'admin.preicfes.create'
+	]);
+	Route::post('preicfes/store',[
+		'uses'	=>	'PreicfesController@store',
+		'as'	=>	'admin.preicfes.store'
+	]);
+	Route::get('preicfes/{id}/show', [
+		'uses'	=>	'PreicfesController@showByAdmin',
+		'as'	=>	'admin.preicfes.show'
+	]);
+	Route::get('preicfes/{id}/edit',[
+		'uses'	=>	'PreicfesController@editByAdmin',
+		'as'	=>	'admin.preicfes.edit'
+	]);
+	Route::put('preicfes/update/{preicfes}', [
+		'uses'	=>	'PreicfesController@update',
+		'as'	=>	'admin.preicfes.update'
 	]);
 });
 
